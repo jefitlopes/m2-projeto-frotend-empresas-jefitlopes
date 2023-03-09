@@ -1,0 +1,94 @@
+
+:root {
+    --blue: #4200ff;
+    --backdrop: #4623a713;
+    --white100: #ffffff;
+    --white95: #ffffff95;
+    --grey1: #a8a8a8;
+    --grey2: #f8f8f8;
+    --black100: #000000;
+    --black50: #00000050;
+    --black30: #00000030;
+    --red: #ce4646;
+    --green: #4ba036;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0%;
+    font-weight: 400;
+    line-height: 100%;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 700;
+  }
+  
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.125rem;
+    height: 3rem;
+  }
+  
+  .button--blue {
+    background-color: var(--blue);
+    border: var(--blue) solid 1px;
+    color: var(--white100);
+  }
+  .button--white {
+    background-color: var(--white100);
+    border: var(--blue) solid 1px;
+    color: var(--blue);
+  }
+  .button--green {
+    background-color: var(--green);
+    border: var(--green) solid 1px;
+    color: var(--white100);
+  }
+  .button--red {
+    background-color: var(--white100);
+    border: var(--red) solid 1px;
+    color: var(--red);
+  }
+  
+  input,
+  option,
+  textarea {
+    background-color: var(--white100);
+    color: var(--black50);
+    border: solid 1px var(--black30);
+    height: 3.25rem;
+    padding-left: 1.0625rem;
+    padding-right: 0.625rem;
+  }
+  
+  .toast {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 12.9375rem;
+    height: 4.25rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: var(--white100);
+    background-color: var(--green);
+    border-radius: 0.625rem;
+  }
+  
+  .toast--error {
+    background-color: var(--red);
+  }
