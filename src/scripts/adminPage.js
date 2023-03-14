@@ -292,25 +292,6 @@ async function renderUsersOutOfWork() {
     option.dataset.userId = user.uuid;
     selectUser.appendChild(option);
   });
-
-  // selectUser.addEventListener('change', async (event) => {
-  //   event.preventDefault()
-  //   const userId = selectUser.options[selectUser.selectedIndex].dataset.userId;
-
-  //   const employeeBody = {
-  //     "user_uuid": userId,
-  //     "department_uuid": departmentId
-  //   }
-  //   console.log(employeeBody)
-
-  //   hireBtn.addEventListener('click', async(e)=>{
-  //     e.preventDefault()
-
-  //     await hireEmployee(employeeBody);
-  //     await renderEmployeesAdminPage(await getUsers(), await getDepartments());
-  //     // modal.close();
-  //   })
-  // });
 }
 renderUsersOutOfWork();
 
@@ -334,17 +315,14 @@ async function renderUsersByDepartment(departmentId) {
   const selectUser = document.getElementById("selectUser");
   const userContainer = document.querySelector(".user__container-card");
 
-  // Check if users for the departmentId have already been rendered
   const renderedDepartmentId = userContainer.getAttribute("data-department-id");
   if (renderedDepartmentId === departmentId) {
 
     return;
   }
 
-  // Set the data-department-id attribute to the rendered departmentId
   userContainer.setAttribute("data-department-id", departmentId);
 
-  // Clear the userContainer
   userContainer.innerHTML = "";
 
   const users = await getUsers();
@@ -408,9 +386,6 @@ export async function renderEmployeesAdminPage(employees, departments) {
       
       ulContainer.appendChild(createdEmployee);
   })
-  // handleModalUpdateEmployee(employees);
-  // handleModalDeleteEmployee();
-  // handleModalNewDepartment();
 } 
 
 function createEmployees (employee, departmentName){
