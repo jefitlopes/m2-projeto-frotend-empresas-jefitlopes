@@ -21,6 +21,15 @@ function goToLoginPage(){
 }
 goToLoginPage()
 
+function goToHome(){
+    const homePageBtn = document.querySelector('.return__btn');
+
+    homePageBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.href = '../../index.html'
+    })
+}
+goToHome()
 
 function registerUser() {
 

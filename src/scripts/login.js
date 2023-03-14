@@ -55,3 +55,13 @@ function goToRegisterPage(){
     })
 }
 goToRegisterPage()
+
+function goToRegister(){
+    const registerPageBtn = document.querySelector('.register__btn');
+
+    registerPageBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.replace('./register.html')
+    })
+}
+goToRegister()
