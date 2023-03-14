@@ -377,7 +377,10 @@ export async function deleteDepartment (departmentId){
         headers: requestHeaders,
     }).then((response) =>{
         if(response.ok){
-            // toast?!
+            alert('Departamento Excluído')
+            setTimeout(() => {
+                window.location.reload();
+              }, 300)
 
             return;
         } else {
@@ -452,7 +455,10 @@ export async function deleteUser (userId){
         headers: requestHeaders,
     }).then((response) =>{
         if(response.ok){
-            // toast?!
+            alert('Usuário deletado')
+            setTimeout(() => {
+                window.location.reload();
+              }, 300)
 
             return response.json();
         } else {

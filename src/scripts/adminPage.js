@@ -1,4 +1,4 @@
-import { getCompanies, getDepartments, createNewDepartment, getUsers, getUsersOutOfWork, validateUser, hireEmployee, fireEmployee } from "./requests.js";
+import { getCompanies, getDepartments, createNewDepartment, getUsers, getUsersOutOfWork, validateUser, hireEmployee, fireEmployee, deleteDepartment, deleteUser } from "./requests.js";
 
 async function authentication() {
   const token = localStorage.getItem('@kenzieEmpresas:token');
@@ -57,66 +57,71 @@ async function renderDepartments(companyId) {
       const departmentOptions = document.createElement("div");
       departmentOptions.classList.add("card__options--departament");
   
-      const eyeIcon = document.createElement("img");
+      const eyeIcon = document.createElement("img")
       eyeIcon.setAttribute("src", "../assets/icons/Eye.svg");
       eyeIcon.setAttribute("alt", "");
       eyeIcon.classList.add("eye__btn");
-      eyeIcon.setAttribute("data-department-id", department.uuid); // set data-department-id attribute
+      eyeIcon.setAttribute("data-department-id", department.uuid);
+      eyeIcon.setAttribute("data-department-name", department.name);
+      eyeIcon.setAttribute("data-department-description", department.description);
+      eyeIcon.setAttribute("data-company-name", department.companies ? department.companies.name : '');
+      
       eyeIcon.addEventListener('click', () => {
-        
-      findDepartment(departments, department.uuid);
+        const departmentId = event.target.getAttribute("data-department-id");
+        const departmentName = event.target.dataset.departmentName;
+        const departmentDescription = event.target.dataset.departmentDescription;
+        const companyName = event.target.dataset.companyName || 'Company not found';
       
-      const modal = document.querySelector('.modal__departament--see');
-      const hireBtn = document.querySelector('.hire__btn');
-      const departmentId = event.target.getAttribute("data-department-id");
-     
-      selectUser.addEventListener('change', async (event) => {
-        event.preventDefault()
-        const userId = selectUser.options[selectUser.selectedIndex].dataset.userId;
-    
-        const employeeBody = {
-          "user_uuid": userId,
-          "department_uuid": departmentId
-        }
+        findDepartment(departments, department.uuid);
       
-        
-        hireBtn.addEventListener('click', async(e)=>{
-          e.preventDefault()
-    
-          await hireEmployee(employeeBody);
-          await renderEmployeesAdminPage(await getUsers(), await getDepartments());
-          // modal.close();
-        })
+        const modal = document.querySelector('.modal__departament--see');
+        const hireBtn = document.querySelector('.hire__btn');
+      
+        selectUser.addEventListener('change', async (event) => {
+          event.preventDefault()
+          const userId = selectUser.options[selectUser.selectedIndex].dataset.userId;
+      
+          const employeeBody = {
+            "user_uuid": userId,
+            "department_uuid": departmentId
+          }
+      
+          hireBtn.addEventListener('click', async(e)=>{
+            e.preventDefault()
+      
+            await hireEmployee(employeeBody);
+            await renderEmployeesAdminPage(await getUsers(), await getDepartments());
+            // modal.close();
+          })
+        });
+      
+        const departmentTitle = document.querySelector(".departament__see--title h2");
+        departmentTitle.innerText = departmentName;
+      
+        const departmentDescriptionEl = document.querySelector(".departament__see--description");
+        departmentDescriptionEl.innerText = departmentDescription;
+      
+        const departmentCompanyEl = document.querySelector(".departament__see--company");
+        departmentCompanyEl.innerText = companyName;
+      
+        modal.showModal();
+      
+        closeModal()
+      
+        renderUsersByDepartment(department.uuid);
       });
-
-      const companyName = department.companies ? department.companies.name : 'Company not found';
-      renderUsersByDepartment(department.uuid, companyName);
-
-      const departmentTitle = document.querySelector(".departament__see--title h2");
-      departmentTitle.innerText = department.name;
-
-      const departmentDescriptionEl = document.querySelector(".departament__see--description");
-      departmentDescriptionEl.innerText = department.description;
-
-      const departmentCompanyEl = document.querySelector(".departament__see--company");
-      departmentCompanyEl.innerText = companyName;
-
-      modal.showModal();
       
-      closeModal()
-      
-      renderUsersByDepartment(department.uuid);
-    });
   
       const pencilIcon = document.createElement("img");
       pencilIcon.setAttribute("src", "../assets/icons/Pencil black.svg");
       pencilIcon.setAttribute("alt", "");
-      pencilIcon.setAttribute("data-department-id", department.uuid); // set data-department-id attribute
+      pencilIcon.setAttribute("data-department-id", department.uuid); 
   
       const trashIcon = document.createElement("img");
       trashIcon.setAttribute("src", "../assets/icons/Trash can.svg");
       trashIcon.setAttribute("alt", "");
-      trashIcon.setAttribute("data-department-id", department.uuid); // set data-department-id attribute
+      trashIcon.setAttribute("data-department-id", department.uuid);
+      trashIcon.addEventListener("click", deleteDepartmentOnClick); 
   
       departmentOptions.appendChild(eyeIcon);
       departmentOptions.appendChild(pencilIcon);
@@ -359,76 +364,91 @@ async function renderUsersByDepartment(departmentId) {
       const employeeId = user.uuid;
       fireEmployee(employeeId);
     });
-    console.log(fireButton)
 
     userContainer.appendChild(userItem);
   });
 
 }
 
-
-
-
-
-export async function renderEmployeesAdminPage(employees, departments) {
-  const ulContainer = document.querySelector('.user__cards > ul');
-
-  ulContainer.innerHTML = '';
-  employees.shift();
-  employees.forEach(async employee => {
-      const employeeDepartmentId = employee.department_uuid;
-      const employeeDepartmentName = departments.find(department => department.uuid == employeeDepartmentId)
-      let foundedCompany = '';
-      if(employeeDepartmentName != undefined){
-          foundedCompany = employeeDepartmentName.companies.name;
-      }
-      const createdEmployee = createEmployees(employee, foundedCompany);
-      
-      ulContainer.appendChild(createdEmployee);
-  })
-} 
-
-function createEmployees (employee, departmentName){
-  if(departmentName == ''){
-      departmentName = 'Funcionário ainda não contratado'
+function deleteDepartmentOnClick(event) {
+  const departmentId = event.target.getAttribute("data-department-id");
+  const shouldDelete = confirm("Tem certeza que deseja excluir este departamento?");
+  
+  if (shouldDelete) {
+    deleteDepartment(departmentId)
+      .then(() => {
+        const departmentElement = event.target.closest(".department");
+        departmentElement.remove();
+      });
   }
-
-  const liContainer = document.createElement('li');
-
-  const dataContainer = document.createElement('div');
-  dataContainer.classList.add('info__card--user');
-
-  const employeeName = document.createElement('h3');
-  employeeName.innerText = employee.username;
-  employeeName.setAttribute('id', 'info__card--employeeName');
-
-  const employeePosition = document.createElement('p');
-  employeePosition.innerText = employee.professional_level;
-
-  const companyName = document.createElement('p');
-  companyName.innerText = departmentName;
-
-  dataContainer.append(employeeName, employeePosition, companyName);
-
-  const imagesContainer = document.createElement('div');
-  imagesContainer.classList.add('card__options--user');
-
-  const imagePencil = document.createElement('img');
-  imagePencil.src = '../assets/icons/Pencil purple.svg';
-  imagePencil.alt = 'Purple Pencil Icon';
-  imagePencil.classList.add('info__card--PurplePencil');
-  imagePencil.dataset.employeeId = employee.uuid;
-
-  const imageTrash = document.createElement('img');
-  imageTrash.src = '../assets/icons/Trash can.svg';
-  imageTrash.alt = 'Trash Icon';
-  imageTrash.classList.add('info__card--trashEmployee');
-  imageTrash.dataset.employeeId = employee.uuid;
-  imageTrash.dataset.employeeName = employee.username;
-
-  imagesContainer.append(imagePencil, imageTrash);
-
-  liContainer.append(dataContainer, imagesContainer);
-
-  return liContainer;
 }
+
+const userCards = document.querySelector(".user__cards ul");
+
+async function renderUsers() {
+  const users = await getUsers();
+
+  users.forEach((user) => {
+    if (user.username !== "ADMIN") {
+      const li = document.createElement("li");
+      li.classList.add("card__user");
+
+      const infoDiv = document.createElement("div");
+      infoDiv.classList.add("info__card--user");
+
+      const usernameHeading = document.createElement("h3");
+      usernameHeading.textContent = user.username;
+      infoDiv.appendChild(usernameHeading);
+
+      const professionalLevelP = document.createElement("p");
+      professionalLevelP.textContent = user.professional_level;
+      infoDiv.appendChild(professionalLevelP);
+
+      const departmentUuidP = document.createElement("p");
+      departmentUuidP.textContent = user.department__uuid;
+      departmentUuidP.style.display = "none";
+      infoDiv.appendChild(departmentUuidP);
+
+      const optionsDiv = document.createElement("div");
+      optionsDiv.classList.add("card__options--user");
+
+      const editImg = document.createElement("img");
+      editImg.setAttribute("src", "../assets/icons/Pencil purple.svg");
+      editImg.setAttribute("alt", "");
+      optionsDiv.appendChild(editImg);
+
+      const deleteImg = document.createElement("img");
+      deleteImg.setAttribute("src", "../assets/icons/Trash can.svg");
+      deleteImg.setAttribute("alt", "");
+      deleteUserOnClick(deleteImg, user.uuid);
+
+      optionsDiv.appendChild(deleteImg);
+
+      li.appendChild(infoDiv);
+      li.appendChild(optionsDiv);
+
+      userCards.appendChild(li);
+
+      user.departmentUuid = user.department__uuid;
+      delete user.department__uuid;
+    }
+  });
+}
+
+function deleteUserOnClick(deleteImg, userId) {
+  deleteImg.addEventListener("click", () => {
+    deleteUser(userId)
+      .then((response) => {
+        if (response.ok) {
+          console.log(`Usuário ${userId} deletado com sucesso!`);
+        } else {
+          response.json().then((responseError) => {
+            console.error(`Erro ao deletar usuário ${userId}: ${responseError}`);
+          });
+        }
+      })
+  });
+}
+
+renderUsers();
+
