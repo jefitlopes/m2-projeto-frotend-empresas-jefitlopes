@@ -458,7 +458,7 @@ export async function deleteUser (userId){
             alert('Usuário deletado')
             setTimeout(() => {
                 window.location.reload();
-              }, 300)
+              }, 10)
 
             return response.json();
         } else {

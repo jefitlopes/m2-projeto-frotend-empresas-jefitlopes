@@ -1,4 +1,4 @@
-import { getCompanies, getDepartments, createNewDepartment, getUsers, getUsersOutOfWork, validateUser, hireEmployee, fireEmployee, deleteDepartment, deleteUser } from "./requests.js";
+import { getCompanies, getDepartments, createNewDepartment, getUsers, getUsersOutOfWork, validateUser, hireEmployee, fireEmployee, deleteDepartment, deleteUser, updateDepartment } from "./requests.js";
 
 async function authentication() {
   const token = localStorage.getItem('@kenzieEmpresas:token');
@@ -116,6 +116,35 @@ async function renderDepartments(companyId) {
       pencilIcon.setAttribute("src", "../assets/icons/Pencil black.svg");
       pencilIcon.setAttribute("alt", "");
       pencilIcon.setAttribute("data-department-id", department.uuid); 
+      pencilIcon.addEventListener("click", () => {
+        const modal = document.querySelector(".modal__departament--edit");
+        const descriptionEdit = document.querySelector(".description__edit");
+        const departmentId = pencilIcon.getAttribute("data-department-id");
+        descriptionEdit.setAttribute("placeholder", department.description);
+      
+        modal.showModal();
+      
+        const closeModalBtn = document.querySelector(".modal__container--edit img");
+        closeModalBtn.addEventListener("click", () => {
+          modal.close();
+        });
+      
+        const saveBtn = document.createElement("button");
+        saveBtn.innerText = "Salvar";
+        saveBtn.classList.add("save__btn");
+      
+        saveBtn.addEventListener("click", async () => {
+          const departmentBody = {
+            description: descriptionEdit.value,
+          };
+          await updateDepartment(departmentBody, departmentId);
+          modal.close();
+          await renderDepartments(companyId);
+        });
+      
+        const modalContainer = document.querySelector(".modal__container--edit");
+        modalContainer.appendChild(saveBtn);
+      });
   
       const trashIcon = document.createElement("img");
       trashIcon.setAttribute("src", "../assets/icons/Trash can.svg");
@@ -452,3 +481,32 @@ function deleteUserOnClick(deleteImg, userId) {
 
 renderUsers();
 
+function editDepartment() {
+  const pencilIcons = document.querySelectorAll("img[data-department-id]");
+  pencilIcons.forEach((pencilIcon) => {
+    pencilIcon.addEventListener("click", () => {
+      const departmentId = pencilIcon.getAttribute("data-department-id");
+      const dialog = document.querySelector(".modal__departament--edit");
+      const closeButton = dialog.querySelector("img");
+      const descriptionInput = dialog.querySelector(".description__edit");
+
+      closeButton.addEventListener("click", () => {
+        dialog.close();
+      });
+
+      dialog.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const departmentBody = {
+          description: descriptionInput.value,
+        };
+        await updateDepartment(departmentBody, departmentId);
+        dialog.close();
+      });
+
+      dialog.showModal();
+    });
+  });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  editDepartment();
+});
