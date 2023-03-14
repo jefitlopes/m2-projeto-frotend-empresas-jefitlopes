@@ -9,8 +9,8 @@
 <body>
     <header class="home__head">
         <div class="header__left">
-            <img src="./src/assets/icons/purple-ellipse.svg" alt="purple circle" class="head__circle">
-            <img src="./src/assets/icons/kenzie-empresas.svg" alt="site logo" class="site__logo">
+            <img src="./src/assets/icons/Ellipse 1.svg" alt="purple circle" class="head__circle">
+            <img src="./src/assets/icons/Kenzie Empresas.svg" alt="site logo" class="site__logo">
         </div>
         <div class="header__right">
             <button class="btn__login">Login</button>
@@ -23,12 +23,20 @@
         </div>
         <div class="home__selector">
             <div class="selector__head">
-                <h2 class="selector__title">Selecionar Setor</h2>
+                
+                <select name="selectSector" id="selectSector">
+                    <!-- <option value="null">Selecionar Setor</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option> -->
+                </select>
+
                 <img src="./src/assets/icons/arrow2.svg" alt="arrow of selection menu">
             </div>
             <div class="cards">
                 <ul>
-                    <li class="sector__card">
+                    <!-- <li class="sector__card">
                         <h3 class="card__name">Empresa Name</h3>
                         <p class="card__info">10 horas</p>
                         <p class="card__sector">Setor</p>
@@ -57,10 +65,11 @@
                         <h3 class="card__name">Empresa Name</h3>
                         <p class="card__info">10 horas</p>
                         <p class="card__sector">Setor</p>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
     </main>
+    <script type="module" src="./src/scripts/index.js" defer></script>
 </body>
 </html>

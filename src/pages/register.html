@@ -9,8 +9,8 @@
 <body>
     <header class="register__head">
         <div class="header__left">
-            <img src="./src/assets/icons/purple-ellipse.svg" alt="purple circle" class="head__circle">
-            <img src="./src/assets/icons/kenzie-empresas.svg" alt="site logo" class="site__logo">
+            <img src="../assets/icons/Ellipse 1.svg" alt="purple circle" class="head__circle">
+            <img src="../assets/icons/Kenzie Empresas.svg" alt="site logo" class="site__logo">
         </div>
         <div class="header__right">
             <button class="btn__home">Home</button>
@@ -21,19 +21,21 @@
         <div class="register__form">
             <h2 class="form__title">Cadastre-se</h2>
             <form action="">
-                <input type="text" class="register__name" placeholder="Seu nome">
+                <input type="text" class="register__name" name="username" id="username" placeholder="Seu nome">
                 <input type="email" name="email" id="email" class="register__email" placeholder="Seu e-mail">
                 <input type="password" name="password" id="password" class="regiter__password" placeholder="Sua senha">
                 <select name="professionalLevel" id="professional_level" class="register__level">
                     <option value="null">Nível Profissional</option>
-                    <option value="value1">Junior</option>
-                    <option value="value2">Pleno</option>
-                    <option value="value3">Senior</option>
+                    <option value="estágio">Estagiário</option>
+                    <option value="júnior">Junior</option>
+                    <option value="pleno">Pleno</option>
+                    <option value="sênior">Senior</option>
                 </select>
             </form>
             <button class="register__btn">Cadastre-se</button>
             <button class="return__btn">Retornar</button>
         </div>
     </main>
+    <script type="module" src="../scripts/register.js" defer></script>
 </body>
 </html>
