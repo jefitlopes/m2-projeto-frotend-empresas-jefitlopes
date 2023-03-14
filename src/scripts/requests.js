@@ -17,8 +17,10 @@ export async function loginPage(loginBody){
         if(response.ok){
             const tokenUser = await response.json();
             localStorage.setItem("@kenzieEmpresas:token", JSON.stringify(tokenUser.token));
-            const {is_admin} = await validateUser();
+            const user = await validateUser();
+            const is_admin = user?.is_admin || false;
             redirect(is_admin);
+
             return tokenUser;
         } else {
             const responseError = await response.json();
@@ -37,7 +39,7 @@ export async function createNewUser(userBody){
     }) .then((response) =>{
         if(response.ok){
 
-            // alert('Sua conta foi criada com sucesso!', 'Agora você pode acessar os conteúdos utilizando seu usuário e senha na página de login: ', "../../index.html" )
+            alert('Sua conta foi criada com sucesso!', 'Agora você pode acessar os conteúdos utilizando seu usuário e senha na página de login: ', "../../index.html" )
             
             setTimeout(() => {
                 window.location.href = '../pages/login.html';

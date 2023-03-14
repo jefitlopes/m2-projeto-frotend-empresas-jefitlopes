@@ -1,4 +1,4 @@
-
+import { validateUser } from "./requests.js";
 
 function logout() {
     
@@ -14,7 +14,7 @@ function logout() {
  async function authentication() {
   const token = localStorage.getItem('@kenzieEmpresas:token');
   if (token) {
-      const isAdmin = await getUserType(JSON.parse(token));
+      const isAdmin = await validateUser(JSON.parse(token));
      
       if (isAdmin.is_admin) {
           window.location.replace('./adminPage.html');
