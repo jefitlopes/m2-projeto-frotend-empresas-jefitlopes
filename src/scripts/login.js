@@ -1,7 +1,6 @@
 import { loginPage } from "./requests.js"
 
 
-
 export function handleLogin(){
     const inputEmail = document.querySelector('.login__email')
     const inputPassword = document.querySelector('.login__password')
@@ -22,19 +21,23 @@ export function handleLogin(){
             count = 0;
             inputEmail.value = '';
             inputPassword.value = '';
-            toast('Informe os dados', 'Por favor, forneça email e senha de login', '', 'redLogin');
+            alert('Informe os dados', 'Por favor, forneça email e senha de login', '', 'redLogin');
             return;
         } else{
-            const token = await loginPage(loginBody);
+            const { token, uuid } = await loginPage(loginBody);
             inputEmail.value = '';
             inputPassword = '';
-           
+            localStorage.setItem('uuid', uuid); 
+            
+            console.log(localStorage.getItem('uuid')); 
+
             return token;
         }
     })
 }
 
 handleLogin()
+
 
 function goToHomePage(){
     const homePageBtn = document.querySelector('.btn__home');

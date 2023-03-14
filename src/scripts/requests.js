@@ -188,7 +188,7 @@ export async function getCompanyDeptByEmployee (){
     })
     return companyDeptEmployee;
 }
-// EDITAR
+
 
 export async function updateEmployee (userBody){
     const updateEmp = await fetch(`${baseUrl}/users`, {
