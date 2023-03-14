@@ -241,6 +241,7 @@ export async function getDepartments (){
             })
         }
     })
+
     return departments;
 }
 
@@ -332,7 +333,10 @@ export async function fireEmployee (employeeId){
         headers: requestHeaders
     }).then((response) =>{
         if(response.ok){
-            // toast?!
+            alert('Funcionário Desligado')
+            setTimeout(() => {
+                window.location.reload();
+              }, 1000)
 
             return response.json();
         } else {

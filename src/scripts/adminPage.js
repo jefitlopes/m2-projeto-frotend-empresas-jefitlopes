@@ -1,4 +1,4 @@
-import { getCompanies, getDepartments, createNewDepartment, getUsers, getUsersOutOfWork, validateUser, hireEmployee } from "./requests.js";
+import { getCompanies, getDepartments, createNewDepartment, getUsers, getUsersOutOfWork, validateUser, hireEmployee, fireEmployee } from "./requests.js";
 
 async function authentication() {
   const token = localStorage.getItem('@kenzieEmpresas:token');
@@ -78,7 +78,7 @@ async function renderDepartments(companyId) {
           "user_uuid": userId,
           "department_uuid": departmentId
         }
-        console.log(employeeBody)
+      
         
         hireBtn.addEventListener('click', async(e)=>{
           e.preventDefault()
@@ -88,6 +88,19 @@ async function renderDepartments(companyId) {
           // modal.close();
         })
       });
+
+      const companyName = department.companies ? department.companies.name : 'Company not found';
+      renderUsersByDepartment(department.uuid, companyName);
+
+      const departmentTitle = document.querySelector(".departament__see--title h2");
+      departmentTitle.innerText = department.name;
+
+      const departmentDescriptionEl = document.querySelector(".departament__see--description");
+      departmentDescriptionEl.innerText = department.description;
+
+      const departmentCompanyEl = document.querySelector(".departament__see--company");
+      departmentCompanyEl.innerText = companyName;
+
       modal.showModal();
       
       closeModal()
@@ -317,17 +330,28 @@ function findDepartment(departments, id) {
 }
 
 async function renderUsersByDepartment(departmentId) {
-  console.log(departmentId)
+
   const selectUser = document.getElementById("selectUser");
   const userContainer = document.querySelector(".user__container-card");
-  selectUser.innerHTML = "";
+
+  // Check if users for the departmentId have already been rendered
+  const renderedDepartmentId = userContainer.getAttribute("data-department-id");
+  if (renderedDepartmentId === departmentId) {
+
+    return;
+  }
+
+  // Set the data-department-id attribute to the rendered departmentId
+  userContainer.setAttribute("data-department-id", departmentId);
+
+  // Clear the userContainer
   userContainer.innerHTML = "";
 
   const users = await getUsers();
   const filteredUsers = users.filter(user => user.department_uuid === departmentId);
 
   const department = await getDepartments(departmentId);
-  const companyName = department.company ? department.company.name : 'Company not found';
+  const companyName = department.companies && department.companies.length ? department.companies[0].name : 'Company not found';
 
 
   const departmentName = department.name;
@@ -347,12 +371,24 @@ async function renderUsersByDepartment(departmentId) {
     userItem.innerHTML = `
       <h3 class="li__username">${user.username}</h3>
       <p class="li__category">${user.professional_level}</p>
-      <p class="li__company">${companyName}</p>
+      <p class="li__company">${user.companies ? user.companies.name : 'Company not found'}</p>
       <button class="fire__employee" type="submit">Desligar</button>
     `;
+
+    const fireButton = userItem.querySelector('.fire__employee');
+
+    fireButton.addEventListener('click', () => {
+      const employeeId = user.uuid;
+      fireEmployee(employeeId);
+    });
+    console.log(fireButton)
+
     userContainer.appendChild(userItem);
   });
+
 }
+
+
 
 
 
