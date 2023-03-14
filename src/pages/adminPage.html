@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenzie Empresas - Admin</title>
+</head>
+<body>
+    <header class="menu__head">
+        <div class="header__left">
+            <img src="../assets/icons/Ellipse 1.svg" alt="purple circle" class="head__circle">
+            <img src="../assets/icons/Kenzie Empresas.svg" alt="site logo" class="site__logo">
+        </div>
+        <div class="header__right">
+            <button class="btn__logout" type="submit">Logout</button>
+        </div>
+    </header>
+    <main class="site__body">
+        <div class="departament__container">
+            <div class="departament__head">
+                <h2 class="departament__title">Departamentos</h2>
+                <select name="selectCompany" id="companys" class="select__companies">
+                    <!-- <option value="null">Selecionar Empresa</option>
+                    <option value="value1">Empresa1</option>
+                    <option value="value2">Empresa2</option>
+                    <option value="value3">Empresa3</option>
+                    <option value="value4">Empresa4</option> -->
+                </select>
+                <button class="create__departament" type="submit"><img src="../assets/icons/Plus.svg" alt="">Criar</button>
+
+                <dialog class="modal__departament--create">
+                    <div class="modal__container--create">
+                        <h2 class="create__title">Criar Departamento</h2>
+                        <img src="../assets/icons/X.svg" alt="close button">
+                        <form action="">
+                            <input type="text" class="create__name" placeholder="Nome do departamento">
+                            <input type="text" class="create__description" placeholder="Descrição">
+                            <select name="selectCompany" id="selectCompany">
+                                <!-- <option value="null">Selecionar Empresa</option>
+                                <option value="value1">Empresa1</option>
+                                <option value="value2">Empresa2</option>
+                                <option value="value3">Empresa3</option>
+                                <option value="value4">Empresa4</option> -->
+                            </select>
+                        </form>
+                    </div>
+                </dialog>
+
+            </div>
+            <div class="departament__cards">
+                <ul id="departmentList" class="departament__list">
+                    <!-- <li class="card__departament">
+                        <div class="info__card--departament">
+                            <h3 class="name__dept">Departament Name</h3>
+                            <p class="description__dept">Departament Description</p>
+                            <p class="company__dept">Company</p>
+                        </div>
+                        <div class="card__options--departament">
+                            <img src="../assets/icons/Eye.svg" alt="">                            
+                            <img src="../assets/icons/Pencil black.svg" alt="">                            
+                            <img src="../assets/icons/Trash can.svg" alt="">
+                        </div>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+
+        <dialog class="modal__departament--see">
+            <div class="modal__container--see">
+                <div class="departament__see--title">
+                    <h2>Nome do Departamento</h2>
+                    <img src="../assets/icons/X.svg" alt="close icon" class="close__modal--btn">
+                </div>
+                <div class="departament__see--options">
+                    <div class="departament__see--text">
+                        <p class="departament__see--description">Descrição do departamento</p>
+                        <p class="departament__see--company">Empresa pertencente</p>
+                    </div>
+                    <div class="departament__see--selection">
+                        <select name="selectUser" id="selectUser">
+                            <!-- <option value="">u1</option>
+                            <option value="">u2</option>
+                            <option value="">u3</option> -->
+                        </select>
+                        <button type="submit" class="hire__btn">Contratar</button>
+                    </div>
+                </div>
+                <div class="users__container">
+                    <ul class="user__container-card">
+                        <li>
+                            <h3 class="li__username">Username</h3>
+                            <p class="li__category">Pleno</p>
+                            <p class="li__company">Company Name</p>
+                            <button class="fire__employee" type="submit">Desligar</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </dialog>
+
+        <!-- <dialog class="modal__departament--edit">
+            <div class="modal__container--edit">
+                <h2 class="edit__title">Editar Departamento</h2>
+                <img src="../assets/icons/X.svg" alt="">
+                <input type="text" class="description__edit" placeholder="Valores anteriores da descrição">
+            </div>
+        </dialog> -->
+        
+        <!-- <dialog class="modal__departament--delete">
+            <div class="modal__container--delete">
+                <p>Realmente deseja deletar o Departamento "NOME" e demetir seus funcionários?</p>
+                <button class="confirm__btn" type="submit">Confirmar</button>
+            </div>
+        </dialog> -->
+
+        <div class="user__container">
+            <h2 class="user__head">Usuários cadastrados</h2>
+            <div class="user__cards">
+                <ul>
+                    <li class="card__user">
+                        <div class="info__card--user">
+                            <h3>Username</h3>
+                            <p>Pleno</p>
+                            <p>Company Name</p>
+                        </div>
+                        <div class="card__options--user">
+                            <img src="../assets/icons/Pencil purple.svg" alt="">
+                            <img src="../assets/icons/Trash can.svg" alt="">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <script type="module" src="../scripts/adminPage.js" defer></script>
+</body>
+</html>
